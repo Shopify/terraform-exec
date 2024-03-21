@@ -17,6 +17,7 @@ import (
 	"os/exec"
 	"runtime"
 	"strings"
+	"syscall"
 
 	"github.com/hashicorp/terraform-exec/internal/version"
 	tfjson "github.com/hashicorp/terraform-json"
@@ -204,6 +205,9 @@ func (tf *Terraform) buildTerraformCmd(ctx context.Context, mergeEnv map[string]
 		}
 		cmd.WaitDelay = tf.waitDelay
 	}
+	// Prevent child processes from receiving signals from parent processes.
+	// The context should be cancelled instead to kill the child process.
+	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
 
 	tf.logger.Printf("[INFO] running Terraform command: %s", cmd.String())
 
