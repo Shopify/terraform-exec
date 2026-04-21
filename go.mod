@@ -2,12 +2,6 @@ module github.com/hashicorp/terraform-exec
 
 go 1.25.8
 
-// Replace hc-install with a fork that has only the renewed GPG key (72D7468F, expiry 2030-03-01).
-// The upstream hc-install (including latest main) has two concatenated armored blocks in
-// DefaultPublicKey, but openpgp.ReadArmoredKeyRing only reads the first (expired) block.
-// See: https://github.com/hashicorp/hc-install/issues/370
-replace github.com/hashicorp/hc-install => github.com/renescheepers/hc-install v0.0.0-20260420061158-1b7a402f0de0
-
 require (
 	github.com/google/go-cmp v0.7.0
 	github.com/hashicorp/go-version v1.9.0
